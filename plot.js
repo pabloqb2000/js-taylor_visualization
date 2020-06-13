@@ -1,16 +1,19 @@
 class Plot {
     /**
      * @param fs Array of functions to plot
+     * @param colors List fo colors for each function
      * @param pos Initial position of the plot
      * @param scale Initial scale of the plot
      */
-    constructor(fs=null, pos=null, scale=null, colors=[]) {
+    constructor(fs=null, colors=null, pos=null, scale=null) {
         this.functions = fs==null ? [] : fs;
+        this.colors = colors==null ? fs.map(() => color(86, 210, 227)) : colors;
         this.pos = pos==null ? new Vector([0,0]) : pos; 
         this.scale = scale==null ? new Vector([max(width,height)/25, max(width,height)/25]) : scale;
 
         this.cellL = 1; // Size of cells in plot units
         this.mouseSensitivity = 0.0005;
+        this.functionResolution = 1; // Pixels per each evaluation of the function
     }
 
     /**
@@ -18,14 +21,13 @@ class Plot {
      */
     draw() {
         translate(-this.pos.getX(), this.pos.getY());
+        noFill();
 
         // Draw the orthogonal grid
         this.drawCells();
 
         // Plot the functions
-        for(let f of this.functions) {
-            this.plot(f);
-        }
+        this.functions.forEach((f,i) => this.plot(f, this.colors[i]));
 
         translate(this.pos.getX(), -this.pos.getY());
     }
@@ -86,10 +88,20 @@ class Plot {
     /**
      * Plot the given function
      * 
-     * @param f 
+     * @param f Function
+     * @param c Color
      */
-    plot(f) {
+    plot(f, c) {
+        stroke(c);
 
+        beginShape();
+        for(let x = (-width/2 + this.pos.getX());
+                x < (width/2 + this.pos.getX());
+                x += this.functionResolution) {
+            
+            vertex(x, f(x / this.scale.getX()) * this.scale.getY());
+        }
+        endShape();
     }
 
     /**
