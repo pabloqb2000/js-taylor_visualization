@@ -91,4 +91,33 @@ class Plot {
     plot(f) {
 
     }
+
+    /**
+     * React to the mouse wheel event
+     * scaling the plot
+     */
+    mouseWheel(event) {
+        let t = 1 - event.delta * plot.mouseSensitivity;
+        let v = new Vector([mouseX - width/2, mouseY - height/2]);
+        v.mult(t-1);
+
+        plot.scale.mult(t);
+        plot.pos.mult(t).add(v);
+    } 
+
+    /**
+     * React to the mousePressed event
+     */
+    mousePressed() {
+        this.vMouse = new Vector([mouseX, mouseY]);
+    }
+
+    /**
+     * React to the mouseDragged event
+     */
+    mouseDragged() {
+        let nMouse = new Vector([mouseX, mouseY]);
+        this.pos.add(Vector.sub(this.vMouse, nMouse));
+        this.vMouse = nMouse;
+    }
 }
