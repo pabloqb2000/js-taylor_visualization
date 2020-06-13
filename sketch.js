@@ -1,4 +1,4 @@
-let plot;
+let plot, vMouse;
 
 function setup() {
 	textFont("Orbitron");
@@ -8,6 +8,7 @@ function setup() {
 	// Create UI elements
 
 
+	// Create plot
 	plot = new Plot();
 
 	// Start UI
