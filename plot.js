@@ -5,11 +5,13 @@ class Plot {
      * @param pos Initial position of the plot
      * @param scale Initial scale of the plot
      */
-    constructor(fs=null, colors=null, pos=null, scale=null) {
+    constructor(fs=null, colors=null, legends=[], pos=null, scale=null) {
         this.functions = fs==null ? [] : fs;
         this.colors = colors==null ? fs.map(() => color(86, 210, 227)) : colors;
         this.pos = pos==null ? new Vector([0,0]) : pos; 
         this.scale = scale==null ? new Vector([max(width,height)/25, max(width,height)/25]) : scale;
+        this.legends = legends;
+        this.showLegends = legends.length != 0;
 
         this.cellL = 1; // Size of cells in plot units
         this.mouseSensitivity = 0.0005;
@@ -30,6 +32,11 @@ class Plot {
         this.functions.forEach((f,i) => this.plot(f, this.colors[i]));
 
         translate(this.pos.getX(), -this.pos.getY());
+
+        // Draw the legends
+        if(this.showLegends) {
+            this.drawLegend();
+        }
     }
 
     /**
@@ -102,6 +109,31 @@ class Plot {
             vertex(x, f(x / this.scale.getX()) * this.scale.getY());
         }
         endShape();
+    }
+
+    /**
+     * Draw the legend
+     */
+    drawLegend() {
+        scale(1, -1);
+        textSize(20);
+        let w = max(this.legends.map((l) => textWidth(l))) + 50;
+
+        fill(32);
+        stroke(200);
+        rect(width/2 - w - 20, -height/2 + 20, w, 30*this.legends.length + 10);
+
+        textAlign(LEFT);
+        this.legends.forEach((l, i) => {
+            let y = -height/2 + 40 + i*30
+            stroke(this.colors[i]);
+            line(width/2 - w - 10, y, width/2 - w + 10, y);
+            noStroke();
+            fill(this.colors[i]);
+            text(l,  width/2 - w + 20, y + 5);
+        });
+
+        scale(1, -1);
     }
 
     /**

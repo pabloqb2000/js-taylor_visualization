@@ -9,7 +9,7 @@ function setup() {
 
 
 	// Create plot
-	plot = new Plot([sin, (x) => x**2]);
+	plot = new Plot([sin, (x) => x**2], [color(227, 103, 86), color(86, 210, 227)], ["sin(x)", "x^2"]);
 
 	// Start UI
 	UI.tableWidth = 1;
@@ -31,7 +31,4 @@ function draw() {
 
 	// Draw plot
 	plot.draw();
-
-	scale(1,-1);
-	text(frameRate().toFixed(2), 0, height/2);
 }
