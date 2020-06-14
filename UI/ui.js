@@ -140,8 +140,33 @@ class UI{
 
     /**
      * When mouse is released deselect the element
+     * and focus the corresponding element
      */
     static mouseReleased() {
         UI.selected = null;
+
+        for(let e of this.elements) {
+            if(e.focusable && e.mouseIsOver()) {
+                e.focused = true;
+            } else {
+                e.focused = false;
+            }
+        }
+    }
+
+    /**
+     * React to key is pressed
+     * (Special characters)
+     */
+    static keyPressed() {
+        this.elements.filter((e) => e.focused).forEach(e => e.keyPressed());
+    }
+    
+    /**
+     * React to key is typed
+     * (ASCII characters)
+     */
+    static keyTyped() {
+        this.elements.filter((e) => e.focused).forEach(e => e.keyTyped());
     }
 }

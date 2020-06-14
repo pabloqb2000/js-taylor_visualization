@@ -25,9 +25,12 @@ function mouseWheel(event) {
 	plot.mouseWheel(event);
 }
 
-// function keyPressed() {
-//   if(keyCode === 83){
-//
-//   }
-// }
+function keyPressed() {
+  UI.keyPressed();
+}
+
+function keyTyped() {
+	UI.keyTyped();
+}
+
 

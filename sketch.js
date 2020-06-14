@@ -1,4 +1,4 @@
-let plot, vMouse;
+let plot;
 
 function setup() {
 	textFont("Orbitron");

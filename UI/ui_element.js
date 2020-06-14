@@ -12,9 +12,11 @@ class UiElement{
      * @param draggable True if the element should be updated on mouseDragged
      * @param clickable True if the element should be updated on mouseClicked
      * @param wheelable True if the element should be updated on mouseWheel
-     * @param visible Default visibility
+     * @param visible True if the element is vivible
+     * @param focusable True if the element can be focused
      */
-    constructor(x, y, width, height, draggable, clickable, wheelable=false, popUpDraw=false, visible=true){
+    constructor(x, y, width, height, draggable, clickable, wheelable=false,
+         popUpDraw=false, visible=true, focusable=false){
         this.x = x;
         this.y = y;
         this.width = width;
@@ -22,8 +24,10 @@ class UiElement{
         this.draggable = draggable;
         this.clickable = clickable;
         this.wheelable = wheelable;
+        this.focusable = focusable;
 
         this.highlighted = false;
+        this.focused = false;
         this.visible = visible;
         this.popUpDraw = popUpDraw;
 
