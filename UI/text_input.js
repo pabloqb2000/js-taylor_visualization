@@ -4,10 +4,12 @@ class TextInput extends UiElement {
      * @param maxChars Max number of characters
      * @param text Default text
      */
-    constructor(maxChars=20, text="", x=0, y=0, height=20) {
+    constructor(maxChars=20, text="", x=0, y=0, height=20, action=null) {
         super(x,y, textWidth("_".repeat(maxChars)) + height, height, false, false);
         this.maxChars = maxChars;
         this.text = text;
+        this.action = action;
+
         this.focusable = true;
     }
 
@@ -31,6 +33,10 @@ class TextInput extends UiElement {
         }
     }
 
+    clear() {
+        this.text = "";
+    }
+
     keyPressed() {
         switch(keyCode) {
             case (8): // Backspace
@@ -38,6 +44,7 @@ class TextInput extends UiElement {
                 break;
             case(13): // Enter
                 this.focused = false;
+                this.action();
                 break;
         }
     }

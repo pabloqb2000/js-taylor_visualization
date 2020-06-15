@@ -33,4 +33,7 @@ function keyTyped() {
 	UI.keyTyped();
 }
 
+function doubleClicked() {
+	plot.mouseDoubleClicked();
+}
 

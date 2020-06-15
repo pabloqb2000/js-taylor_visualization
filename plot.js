@@ -16,6 +16,7 @@ class Plot {
         this.cellL = 1; // Size of cells in plot units
         this.mouseSensitivity = 0.0005;
         this.functionResolution = 1; // Pixels per each evaluation of the function
+        this.highlighted = -1;
     }
 
     /**
@@ -29,7 +30,10 @@ class Plot {
         this.drawCells();
 
         // Plot the functions
-        this.functions.forEach((f,i) => this.plot(f, this.colors[i]));
+        this.functions.forEach((f,i) => {
+            strokeWeight(i == this.highlighted ? 2 : 1);
+            this.plot(f, this.colors[i])
+        });
 
         translate(this.pos.getX(), -this.pos.getY());
 
@@ -105,8 +109,9 @@ class Plot {
         for(let x = (-width/2 + this.pos.getX());
                 x < (width/2 + this.pos.getX());
                 x += this.functionResolution) {
+            let y = f(x / this.scale.getX()) * this.scale.getY();
             
-            vertex(x, f(x / this.scale.getX()) * this.scale.getY());
+            vertex(x, y);
         }
         endShape();
     }
@@ -120,13 +125,15 @@ class Plot {
         let w = max(this.legends.map((l) => textWidth(l))) + 50;
 
         fill(32);
-        stroke(200);
+        stroke(this.highlighted != -1 ? 200 : 230);
+        strokeWeight(1);
         rect(width/2 - w - 20, -height/2 + 20, w, 30*this.legends.length + 10);
 
         textAlign(LEFT);
         this.legends.forEach((l, i) => {
             let y = -height/2 + 40 + i*30
             stroke(this.colors[i]);
+            strokeWeight(i == this.highlighted ? 2 : 1);
             line(width/2 - w - 10, y, width/2 - w + 10, y);
             noStroke();
             fill(this.colors[i]);
@@ -134,6 +141,24 @@ class Plot {
         });
 
         scale(1, -1);
+    }
+
+    /**
+     * Check if one function should be highlighted
+     */
+    update() {
+        this.highlighted = -1;
+        textSize(20);
+        let w = max(this.legends.map((l) => textWidth(l))) + 50;
+        if(mouseX > width - w - 20 && mouseX < width - 20) {
+            for(let i = 0; i < this.legends.length; i++) {
+                let y = 20 + i*30;
+                if(mouseY > y && mouseY < y + 30) {
+                    this.highlighted = i;
+                    break;
+                }
+            }
+        }     
     }
 
     /**
@@ -163,5 +188,13 @@ class Plot {
         let nMouse = new Vector([mouseX, mouseY]);
         this.pos.add(Vector.sub(this.vMouse, nMouse));
         this.vMouse = nMouse;
+    }
+
+    mouseDoubleClicked() {
+        if(this.highlighted != -1) {
+            this.functions.splice(this.highlighted, 1);
+            this.colors.splice(this.highlighted, 1);
+            this.legends.splice(this.highlighted, 1);
+        }
     }
 }
