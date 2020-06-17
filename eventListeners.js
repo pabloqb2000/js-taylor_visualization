@@ -1,7 +1,11 @@
 function mouseDragged() {
-	UI.mouseDragged();
-	Drag.mouseDragged();
-	plot.mouseDragged();
+	let r = UI.mouseDragged() || Drag.mouseDragged();
+	if(!r){
+		let p = plot.pos.copy();
+		let s = plot.scale.copy();
+		plot.mouseDragged();
+		node.updatePos(p, s);
+	} 
 }
 
 function mousePressed() {
@@ -21,8 +25,11 @@ function mouseReleased() {
 }
 
 function mouseWheel(event) {
-	UI.mouseWheel(event);
+	UI.mouseWheel(event);	
+	let p = plot.pos.copy();
+	let s = plot.scale.copy();
 	plot.mouseWheel(event);
+	node.updatePos(p, s);
 }
 
 function keyPressed() {
@@ -31,9 +38,5 @@ function keyPressed() {
 
 function keyTyped() {
 	UI.keyTyped();
-}
-
-function doubleClicked() {
-	plot.mouseDoubleClicked();
 }
 

@@ -90,7 +90,9 @@ class UI{
     static mouseDragged() {
         if(UI.selected != null) {
             UI.selected.dragged();
+            return true;
         }
+        return false;
     }
 
     /**

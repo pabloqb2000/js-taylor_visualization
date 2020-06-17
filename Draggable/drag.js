@@ -37,7 +37,9 @@ class Drag {
     static mouseDragged() {
         if(Drag.selected != null) {
             Drag.selected.dragged();
+            return true;
         }
+        return false;
     }
 
     /**

@@ -23,6 +23,6 @@ class DragCircle extends DragElement{
      * Check if mouse is over the object
      */
     mouseIsOver() {
-        return createVector(mouseX, mouseY).dist(this.pos) <= this.r;
+        return createVector(mouseX, mouseY).dist(this.pos) <= this.r + 10;
     }
 }
