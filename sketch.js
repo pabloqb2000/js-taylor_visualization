@@ -8,19 +8,19 @@ function setup() {
 	textFont("Orbitron");
 	createCanvas(windowWidth, windowHeight);
 	background(32);
+	
+	// Create node
+	node = new DragNode(createVector(width/2, height/2), 5, () => taylor.reset());
 
 	// Create plot
 	plot = new Plot([sin], [color(colors[0])], ["sin(x)"]);
-	taylor = new TaylorInterp(plot, 120);
+	taylor = new TaylorInterp(plot, 1.5);
 
 	// Create UI elements
 	fncInput = new TextInput(32, "x**2", 0,0, height/20, addFnc);
 	addBtn = new Button(0,0, width/8, height/20, "Change", addFnc);
 	degreeSld = new Slider(0, 5, 5, 0,0, width/12, height/60, 1, "Degree", true, 0, () => taylor.reset());
 	resetBtn = new Button(0,0, width/12, height/30, "Reset", () => taylor.reset());
-
-	// Create node
-	node = new DragNode(createVector(width/2, height/2), 5, () => taylor.reset());
 
 	// Start UI
 	UI.tableWidth = 2;
@@ -49,11 +49,15 @@ function draw() {
 	Drag.update();
 	Drag.draw();
 
+	// Write errors and degree
 	textSize(height/40);
 	textAlign(LEFT);	
 	fill(color(colors[0]));
 	noStroke();
-	text(errorTxt, fncInput.x, fncInput.y + fncInput.height + height/40 + 10)
+	text(errorTxt, degreeSld.x, degreeSld.y + degreeSld.height + height/40 + 20);
+	fill(200);
+	text("Degree: " + taylor.coefs.length.toString(),
+	 degreeSld.x, degreeSld.y + degreeSld.height + height/20 + 40)
 }
 
 /**
